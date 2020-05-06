@@ -12,19 +12,19 @@ Sources:
 
 Specify network name. I went with 'psinet'
 
-![PUPPETH01](Images/puppeth01.png)
+![PUPPETH01](images/puppeth01.png)
 
 Choose 2 to create our new genesis block
 
-![PUPPETH01](Images/puppeth03.png)
+![PUPPETH01](images/puppeth03.png)
 
 Create from Scratch:
 
-![PUPPETH01](Images/puppeth04.png)
+![PUPPETH01](images/puppeth04.png)
 
 i left it default '15'
 
-![PUPPETH01](Images/puppeth05.png)
+![PUPPETH01](images/puppeth05.png)
 
 So we have network name: psinet
 
