@@ -133,7 +133,7 @@ geth --datadir node2/ --syncmode 'full' --port 30312 --rpc --rpcaddr 'localhost'
 
 
 
-![MyCrypto](Images/Mycrypto01.png)
+![MyCrypto](images/Mycrypto01.png)
 
 My crypto wallet new connection
 
@@ -143,7 +143,7 @@ DO NOT USE HTTPS:// LIKE THE GREYED OUT TEXT IN MYCRYPTO. must be just http. NOT
 
 If successful it will turn green bottom left with "Connected to ETH Network"
 
-![MyCrypto](Images/Mycryptoconnected.png)
+![MyCrypto](images/Mycryptoconnected.png)
 
 
 
@@ -153,7 +153,7 @@ Choose the keystore and unlock the account.
 
 
 
-![keystore](Images/ks2.png)
+![keystore](images/ks2.png)
 
 
 
@@ -163,7 +163,7 @@ The Balance set in the Gensis block shows the prefunded addresses.
 
 
 
-![keystore](Images/GenBlock.png)
+![keystore](images/GenBlock.png)
 
 
 
