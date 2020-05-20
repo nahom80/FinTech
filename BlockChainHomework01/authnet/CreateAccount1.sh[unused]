@@ -1,0 +1,3 @@
+cd "$HOME\OneDrive\FinTechBootCamp\BlockChainHomework01\authnet"
+geth --datadir node1 account new
+read -p "Press <ENTER> to close"
