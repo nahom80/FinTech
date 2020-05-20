@@ -1,170 +1,233 @@
-Setting up a PoA block chain using PUPPETH, GETH and MyCrypto
+# Proof Of Authority BlockChain using GETH
 
-I used some sources in addition to the Columbia Fintech materials. I was unable to complete the assignment with the given instruction. I searched
-
-Sources:
+Outside sources used:
 
 * https://hackernoon.com/setup-your-own-private-proof-of-authority-ethereum-network-with-geth-9a0a3750cda8
 * https://medium.com/@prashantramnyc/how-to-set-up-a-multi-node-private-ethereum-blockchain-from-scratch-in-20-mins-or-less-e0d7e091e062
 * https://around25.com/blog/build-private-ethereum-blockchain-geth/
 
-## Step 1 Genisys Blocks and Accounts
 
-Specify network name. I went with 'psinet'
 
-![PUPPETH01](images/puppeth01.png)
+We will be setting up a "Proof of Authority" Blockchain. This requires us to name unlock\sealer accounts for the "Authority". The Main steps will be:
 
-Choose 2 to create our new genesis block
+* Accounts\Keystores ( MyCrypto )
 
-![PUPPETH01](images/puppeth03.png)
+* Genisys Block creation - .json file ( Puppeth )
 
-Create from Scratch:
+* Node Initialization ( Geth )
 
-![PUPPETH01](images/puppeth04.png)
+* Node startup ( Geth )
 
-i left it default '15'
+* Custom Network Configuration ( MyCrypto )
 
-![PUPPETH01](images/puppeth05.png)
+* Checking Wallet funds
 
-So we have network name: psinet
+* Transaction ( MyCrypto )
 
-## Step 2 Creating the two nodes
+  
 
-Commands:
+## Step 1 Account and Keystore Creation using 'MyCrypto'
 
-geth --datadir $HOME/Documents/Geth/psinet/node1/ account new
+In this section we will create a keystore file. This is a encrypted file that represents a wallet. This means that you will have to set and remember a password for this keystore. We will make 2 of them, one for each of our 2 nodes.
 
+Open up 'MyCrypto' and choose "Create New Wallet"
 
+![MyCryptoC01](Images/CreateWallet01.png)
 
+![MyCryptoC01](Images/CreateWallet02.png)
 
+Make sure you write the passwords down for each keystore. They can be the same for each one to make it easier.
 
-Save Genesis specs
+Example of Keystore file name: UTC--2020-05-20T16-32-08.056Z-...
 
-all node files are here:  $HOME/Documents/Geth/psinet/
+Save both of these someplace. We will be needing these later.
 
-- future commands need to be run from this directory so that the proper blockchain is specified.
 
-==========================
 
-## Step 3 Initializing the nodes
 
-initialize nodes:
 
-your working directory needs to be in the same folder as the nodes
 
-```
-geth --datadir node1/ init psinet.json
-geth --datadir node2/ init psinet.json
-```
 
-You should get this message from the above commands!
 
-Successfully wrote genesis state         database=lightchaindata hash=93d216…fa2440
 
-Successfully wrote genesis state         database=lightchaindata hash=93d216…fa2440
+## Step 2 Generate .json for Genesis Block ( puppeth )
 
-After all steps above have been taken this is what your blockchain directory should look like.
+In this step we will be using the puppeth tool to configure then export a .json file which we will use to initializes our nodes and create the first block known as the Genesis Block.
 
-cmd //c tree   ( this is a windows tree bash equivalent command)
+After running puppeth it will prompt you with the following questions:
 
-▒▒▒▒node1
-▒   ▒▒▒▒geth
-▒   ▒   ▒▒▒▒chaindata
-▒   ▒   ▒▒▒▒lightchaindata
-▒   ▒▒▒▒keystore
-▒▒▒▒node2
-    ▒▒▒▒geth
-    ▒   ▒▒▒▒chaindata
-    ▒   ▒▒▒▒lightchaindata
-    ▒▒▒▒keystore
-(base)
+* `Please specify a network name to administer (no spaces, hyphens or capital letters please)`
 
+> authnet 
 
 
-Notes:
 
-BOOTNODE COMMAND:
+Choose "2": "Configure new Genesis", 
 
-bootnode -nodekey boot.key -verbosity 9 -addr :30310
+then "1": "Create Genesis from Scratch", 
 
-enode://b6fee01a250b94dd587bf84d9ea81908b4683a3dd13193515a656a45898ce2eaf43eb63b1c6a4420704173bcfb14bb607d672ed7d1aabb9c0bde6c58e7037ae8@127.0.0.1:0?discport=30310
+then "2": "Proof Of Authority"
 
-## Step 4 starting the nodes
+![PUPPETH01](Images/Puppeth0.png)
 
-==================
+It will ask you for 2 addresses to seal. These accounts are the ones we created as keystores earlier. Their addresses are located inside the files as clear text.
 
-Running the Nodes
+![PUPPETH01](Images/Puppeth4.png)
 
-=====================
 
-Make sure you are in the proper directory with NODE to run
 
-Open up a gitbash(windows) and make sure you are in proper blockchain dir.
+It will also ask you which accounts to prefund. List the same ones you entered to 'seal' as well. This will just make it easier for us.
 
-Node1 Command: geth --datadir node1 --mine --minerthreads 1
+It will ask to prefund, go ahead and say "Yes"
 
-Node2 Command (in second window):
+It will ask you to specify a chain ID. i recommend using an ID that is at least 4 digits as there are reserved chain IDs for well known networks. We choose a chainID of '3333'. This will be written into the .json file later but I recommend writing this down.
 
-geth --datadir /node2 --port 30304 --rpc --bootnodes "enode://fbfd6d13ed99b9c1b2dcf6d2100c4d4a405404a1a27d25eae2442e1ad5859baf091cfd65a4bb1c960a135b2d821a6b671d392b18ce48a75aa0868e7f6550a3d3@127.0.0.1:30303" --password node2/password.txt --ipcdisable
+![PUPPETH01](Images/Puppeth5.png)
 
 
 
-If successfully running both nodes you should see a similar line like this on second window!
+The last part of Puppeth is exporting the genesis. It will take you to a new menu with 4 options. Choose 2, "Manage Existing genesis", 
 
-INFO New local node record - seq=9 id=e05980935ee5191f ip=67.245.1.222 udp=30304 tcp=30304
+then "2", "Export Genesis configurations"
 
-Second block will show successful block sync,chain index upgrade and new local record 
+When it asks which folder, just hit enter again and it will save it down into your terminals working directory.
 
-![keystore](Images/success.png)
+* *its ok to get the two errors regarding Aleth and Parity Chain specs*
 
 
 
-### TEST CODE:
+![PUPPETH01](Images/PuppethEND.png)
 
-```
-geth --datadir node1/ --syncmode 'full' --port 30311 --rpc --rpcaddr 'localhost' --rpcport 8501 --bootnodes 'enode://b6fee01a250b94dd587bf84d9ea81908b4683a3dd13193515a656a45898ce2eaf43eb63b1c6a4420704173bcfb14bb607d672ed7d1aabb9c0bde6c58e7037ae8@127.0.0.1:30311' --networkid 1515 --gasprice '1' -unlock '0x115bFf4c44aC61DAf9D37c2AC6b1CE3CEdc93532' --password node1/password.txt --mine --allow-insecure-unlock --ipcdisable
-```
+We named our network authnet so we are interested in the 'authnet.json'. They rest of the files can be deleted.
 
-```
-geth --datadir node2/ --syncmode 'full' --port 30312 --rpc --rpcaddr 'localhost' --rpcport 8502 --bootnodes 'enode://b6fee01a250b94dd587bf84d9ea81908b4683a3dd13193515a656a45898ce2eaf43eb63b1c6a4420704173bcfb14bb607d672ed7d1aabb9c0bde6c58e7037ae8@127.0.0.1:30312' --networkid 1515 --gasprice '0' --unlock '0x6f5Aa1E06Ee74697d41316be16067c2763aBFd8F' --password node2/password.txt --mine --allow-insecure-unlock --ipcdisable
-```
+I created a folder named "authnet" which will be the top level for all of our geth blockchain files. Put our authnet.json at the root of our toplevel directory authnet. Inside the authnet folder create 2 folders ; 1 called node1 and another node2. Create a Keystore folder in each node folder and stick both of our keystore files we generated in step1 ( the files that look like "UTC--2020-05-20T16-32-08.056Z-...")
 
-### END TEST CODE
+authnet
 
+​		├───node1
+​		│   └───keystore
+​		└───node2
+​		    └───keystore
 
 
-![MyCrypto](images/Mycrypto01.png)
 
-My crypto wallet new connection
+Now we need to edit the authnet.json so that both of our accounts we created earlier will have funds in them. Open up the authnet.json with a text editor and look for our two addresses that represent our wallets. They will be listed at the very end of the file.
 
-- this wasted hours of my time figuring out. - http://127.0.0.1:8485
+under the 'balance' section of each address change one of the zeros in the middle of that large number to a 1
 
-DO NOT USE HTTPS:// LIKE THE GREYED OUT TEXT IN MYCRYPTO. must be just http. NOT with 's'
+ "balance": "0x2000000000000000000000000000*1*0000000000000000000000000000000000"
 
-If successful it will turn green bottom left with "Connected to ETH Network"
+Save the file and close it. we are ready to use a geth command to generate the first block.
 
-![MyCrypto](images/Mycryptoconnected.png)
+![PUPPETH01](Images/authnetjson.png)
 
 
 
-I used a keystore and password when opening up both my accounts
+# Step 3 Initialize the nodes ,generate the first block
 
-Choose the keystore and unlock the account.
+In this section we will initialize both nodes using the generated puppeth .json file from the previous step. I have created shell scripts to make this process repeatable. 
 
 
 
-![keystore](images/ks2.png)
+initnode1.sh:
 
+`cd "$HOME\OneDrive\FinTechBootCamp\BlockChainHomework01\authnet"
+geth init authnet.json --datadir node1
+read -p "Press <ENTER> to close"`
 
+initnode2.sh:
 
+`cd "$HOME\OneDrive\FinTechBootCamp\BlockChainHomework01\authnet"
+geth init authnet.json --datadir node2
+read -p "Press <ENTER> to close"`
 
+You should get a similar message when successfully initializing both nodes. In my example scripts i make sure i get to my root blockchain directory authnet before calling the geth command.
 
-The Balance set in the Gensis block shows the prefunded addresses.
+* if you need to undo this, just delete both "GETH" directories in each NODE folder ( Node1 and Node2 in our example )
 
+![PUPPETH01](Images/geth01.png)
 
 
-![keystore](images/GenBlock.png)
 
+# Step 4 Starting the Nodes
 
+In this section we will be starting the first node then the second. We will need info from the output window on the first node before we start the second. Again, i have created shell scripts to make this process repeatable.
 
-* sending ethereum via MyCrypto seemed very inconsistent. it worked sometimes and others it failed. I was unable to consistently recreate the issues every time.
+StartAuthnetNode1.sh:
+
+`cd "$HOME\OneDrive\FinTechBootCamp\BlockChainHomework01\authnet"
+geth --datadir node1/ --syncmode 'full' --port 30311 --rpc --rpcaddr 'localhost' --rpcport 8545 -unlock '0x7f703713b3a58cfd37865eb2359b098203bf0eb5' --password pw.txt --mine --allow-insecure-unlock --ipcdisable
+read -p "Press <ENTER> to close"`
+
+The first line in the shell script makes sure we are in the right directory. The second line is a long one with many parameters. The first part -`--datadir node1/` the data directory of the node we are using. `--rpc` this allows communication to happen to the node itself. `--rpcport 8545` this is default but i like to be explicit whenever I can. The `--unlock` param specifies the wallet public address hash. We used the first one we created from step1. The `--password pw.txt` line gets the password from a text file we have sitting in the root of our 'authnet' folder. *Make sure you have a carriage return after the password in that text file!*  `--mine` is necessary to progress the blockchain and record any transactions being made. `--allow-insecure-unlock` and `--ipcdisable` might be windows specific and make it easier to show our example.
+
+Running this script should give us output with an enode value we NEED for the second node:
+
+![PUPPETH01](Images/node1.png)
+
+This will allow us to create the script to start the second node. Here is what mine looks like after grabbing the enode information from launching the first node:
+
+`cd "$HOME\OneDrive\FinTechBootCamp\BlockChainHomework01\authnet"
+geth --datadir node2 --port 30304 --unlock "4044b2a055ad6188c424a3a6e31e7f3dfd69d3e4"  --bootnodes "enode://a33f9c85cc6813b2e23819452f5116a0e951dd4f0984db9b3ab4acf2792aa385d644ad840ce5c26506731c0fbc9115df24e8c074e19543afe957a4cab73ce9dc@127.0.0.1:30311"  --password pw.txt --ipcdisable --mine
+read -p "Press <ENTER> to close"`
+
+
+
+Running these scripts from a file have the advantage of being able to easily start and stop the nodes. You should get a *consistent* "peercount=1" message on both node windows if they are communicating with each other. Keyword is Consistent since they tend to report a peer even when they do not see one and vice versa but never seemingly consistently.
+
+
+
+# Step 5 Creating a custom network config(MyCrypto)
+
+Open MyCrypto and select "Change Network" and create a new network with the info provided in the pictures below. In my example I used 'authnet' this can be any name you choose.
+
+
+
+![PUPPETH01](Images/mc0.png)
+
+![PUPPETH01](Images/MCnet.png)
+
+
+
+The MyCrypto application will attempt to connect to your existing Node Network. If it is successful you will see the message at the bottom left; "Connected to ETH Network"
+
+![PUPPETH01](Images/MC1.png)
+
+
+
+# Step 6 Checking wallet funds
+
+
+
+In this second we will view our wallets designated by the keystores we created in part 1. MyCrypto should be connected to our running blockchain for this to work. 
+
+Select "View & Send" within MyCrypto at the top left, then click Select wallet file. Remember the keystore files should be under the Node1/Keystore and Node2/Keystore respectively. It will require the password we set earlier( same as the one in the pw.txt ).
+
+If everything is working correctly you should see funds within mycrypto for both accounts. It will look something like below;
+
+![PUPPETH01](Images/wallet01.png)
+
+
+
+# Step 7 Sending a transaction
+
+In this last and final step we will send Ether from one account to another using the second public address. Once you have opened up the first wallet within MyCrypto, select send ether from the drop down list. It may already be selected:
+
+![PUPPETH01](Images/send01.png)
+
+
+
+Input in the OTHER public address of the second wallet, send some ether ( in my case i did 23  ), then select " SEND TRANSACTION".
+
+You should get a green success message within mycrypto at the bottom:
+
+![PUPPETH01](Images/trans01.png)
+
+![PUPPETH01](Images/trans02.png)
+
+![PUPPETH01](Images/trans03.png)
+
+
+
+Success! The nodes have recorded your transaction\s. If you remove the Geth folders from the NODEs directory this will reset the block chain. You can reinitialize and start from scratch if you like.
+
