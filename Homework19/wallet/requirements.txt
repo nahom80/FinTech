@@ -1,0 +1,27 @@
+Requirements
+
+
+Php
+	hd-wallet-derive
+	https://github.com/dan-da/hd-wallet-derive
+
+
+
+Python
+	pip install bit
+	pip install web3
+
+FROM\IMPORTS for python used:
+import subprocess
+import json
+import os
+from constants import BTC, BTCTEST, ETH
+from pprint import pprint
+from getpass import getpass
+from pathlib import Path
+from eth_account import Account
+
+from bit import PrivateKeyTestnet
+from bit.network import NetworkAPI
+from web3 import Account,Web3, middleware
+from web3.middleware import geth_poa_middleware

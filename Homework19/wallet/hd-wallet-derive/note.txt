@@ -1,0 +1,1 @@
+unable to include this in github repo because of the # of files. please clone\download from: https://github.com/dan-da/hd-wallet-derive
