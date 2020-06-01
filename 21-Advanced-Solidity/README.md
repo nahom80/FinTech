@@ -1,6 +1,6 @@
 # Unit 21: PupperCoin Crowd Fund	
 
-![crowd](images\crowdFund.jpg)
+![crowd](images/crowdFund.jpg)
 
 In this exercise we will demonstrate how to create a contract that will allow the creation and sale of a token similar to a crypto currency. There will be a start time, end time, coin cap and target raise goal built into the contract. These are actually very important features and prevents abuse. We will be deploying this on the *Kovan test network.*
 
