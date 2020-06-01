@@ -22,7 +22,7 @@ https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contr
 
 In order to deploy our contract we will need 3 fields filled. All these are arbitrary but we will be using the values below.
 
-![crowd](images\pupperc01.png)
+![crowd](images/pupperc01.png)
 
 
 
@@ -30,13 +30,13 @@ Deployed onto Kovan under : 0x23d0472dfE2570Dd5c1F23559CdCb115Eb9fD1DC
 
 Since we declared these variables public we have access and can see their values.
 
-![crowd](images\pupperc02.png)
+![crowd](images/pupperc02.png)
 
 We can also check Balances and Allowances:
 
 * note that you do not need to own the account to see their balance, just need the their wallet address.
 
-![crowd](images\pupperc03.png)
+![crowd](images/pupperc03.png)
 
 
 
@@ -44,7 +44,7 @@ I gave my main address the majority of the coins for easy distribution.
 
 "0xEc985F1C90D4AFeD0d90f62cdE6A570E986Cf4aa"
 
-![crowd](images\pupperc04.png)
+![crowd](images/pupperc04.png)
 
 You need to grant approval and define Allowances for address and amounts for transfers to occur.
 
@@ -58,7 +58,7 @@ https://kovan.etherscan.io/address/0x23d0472dfE2570Dd5c1F23559CdCb115Eb9fD1DC
 
 If you compile the provided code within remix.ethereums IDE and insert the contract hash in the provided fields you can check the balances yourself.
 
-![crowd](images\pupperc05.png)
+![crowd](images/pupperc05.png)
 
 
 
